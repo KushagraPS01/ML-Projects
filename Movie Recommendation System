@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+data = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Movies%20Recommendation.csv')
+data.head()
+data.info()
+data.shape
+data.columns
+X = data[['Movie_Genre',
+        'Movie_Keywords',
+        'Movie_Tagline',
+        'Movie_Cast',
+        'Movie_Director']]
+X.fillna('',inplace=True)
+X.isna().sum()
+features = X['Movie_Genre'] + ' ' + X['Movie_Keywords'] + ' ' + X['Movie_Tagline'] + ' ' + X['Movie_Cast'] + ' ' + X['Movie_Director']
+features
+from sklearn.feature_extraction.text import TfidfVectorizer
+tfidf = TfidfVectorizer()
+X_movie = tfidf.fit_transform(features)
+print(X_movie)
+from sklearn.metrics.pairwise import cosine_similarity
+Similarity_Score = cosine_similarity(X_movie)
+X.shape
+Similarity_Score.shape
+Favourite_Movie_Name = input('Enter your favourite movie name :')
+Movie_List = data['Movie_Title'].tolist()
+Movie_List
+import difflib
+Favourite_Movie_Name = input('Enter your favourite movie name :')
+Movie_Recommend = difflib.get_close_matches(Favourite_Movie_Name,Movie_List)
+Movie_Recommend
+data.isna().sum()
